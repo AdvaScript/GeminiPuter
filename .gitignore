@@ -1,3 +1,6 @@
 .pio
 .vscode
 *.log
+*.bin
+GeminiPuter.bin
+.DS_Store
