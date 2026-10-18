@@ -404,7 +404,9 @@ void setup() {
   lvglLock();
   ui_init();
   lv_obj_set_style_text_font(ui_TextArea_AI_response, &rubik_14_cy, 0);
+  lv_obj_set_style_text_color(ui_TextArea_AI_response, lv_color_hex(0x38B6FF), LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_text_font(ui_TextArea_chat_input, &rubik_14_cy, 0);
+  lv_obj_set_style_text_align(ui_TextArea_chat_input, LV_TEXT_ALIGN_RIGHT, 0);
   lv_obj_set_style_text_font(ui_TextArea_debug_status, &rubik_14_cy, 0);
   initLangToast();
   lvglUnlock();
@@ -467,7 +469,7 @@ void setup() {
       int val = (pct * 255) / 100;
       if (val < 5) val = 5;
       setScreenBrightness(val);
-      return "Яркость экрана установлена на " + String(pct) + "%";
+      return "Screen brightness set to " + String(pct) + "%";
     }
 
     if (fnName.endsWith("set_led_effect")) {
@@ -488,23 +490,23 @@ void setup() {
       CRGB c = parseLedColor(color);
 
       setLedState(effId, crgbToUint32(c), b);
-      return "Светодиод переключен в режим " + effect + " (" + color + ", " + String(brightnessPct) + "%)";
+      return "LED switched to " + effect + " (" + color + ", " + String(brightnessPct) + "%)";
     }
 
     if (fnName.endsWith("generate_led_pattern")) {
       if (!err && doc.containsKey("steps")) {
         setLedPatternFromJson(doc["steps"].as<JsonArray>());
-        return "Пользовательская анимация светодиода запущена";
+        return "Custom LED pattern animation started";
       }
-      return "Ошибка параметров анимации";
+      return "Invalid animation parameters";
     }
 
     if (fnName.endsWith("get_battery_percentage")) {
       int bat = getBatteryPercentage();
-      return "Текущий заряд аккумулятора составляет " + String(bat) + "%";
+      return "Current battery charge is " + String(bat) + "%";
     }
 
-    return "Команда выполнена";
+    return "Command executed successfully";
   });
 
   geminiChat.initialize();

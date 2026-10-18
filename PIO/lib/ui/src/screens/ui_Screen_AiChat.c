@@ -30,6 +30,7 @@ lv_textarea_set_placeholder_text(ui_TextArea_AI_response,"...");
 lv_obj_set_scrollbar_mode(ui_TextArea_AI_response, LV_SCROLLBAR_MODE_ON);
 lv_obj_set_scroll_dir(ui_TextArea_AI_response, LV_DIR_VER);
 lv_obj_set_style_text_font(ui_TextArea_AI_response, &ui_font_RR17, LV_PART_MAIN| LV_STATE_DEFAULT);
+lv_obj_set_style_text_color(ui_TextArea_AI_response, lv_color_hex(0x38B6FF), LV_PART_MAIN | LV_STATE_DEFAULT);
 lv_obj_set_style_radius(ui_TextArea_AI_response, 0, LV_PART_MAIN| LV_STATE_DEFAULT);
 lv_obj_set_style_bg_color(ui_TextArea_AI_response, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT );
 lv_obj_set_style_bg_opa(ui_TextArea_AI_response, 0, LV_PART_MAIN| LV_STATE_DEFAULT);

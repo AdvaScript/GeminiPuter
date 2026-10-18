@@ -219,16 +219,13 @@ String GeminiChat::sendMessage(const String &message) {
   JsonArray sysParts = systemInstruction.createNestedArray("parts");
   JsonObject sysPart = sysParts.createNestedObject();
   sysPart["text"] =
-    "У тебя крошечный экран 240x135, где помещается около 96 букв. "
-    "Отвечай максимально коротко, емко и без воды. "
-    "Длинные ответы давай только если пользователь прямо об этом попросит. "
-    "Ты помнишь предыдущие сообщения в этом диалоге. "
-    "Для управления устройством (яркость экрана, светодиод-лампа, кастомные "
-    "цветовые анимации, заряд батареи) НЕ пиши текстовые теги в видимом "
-    "ответе — вместо этого вызывай соответствующую функцию (function call). "
-    "Вызывай функцию только когда пользователь явно просит изменить яркость, "
-    "светодиод/лампу или узнать заряд батареи. "
-    "После вызова функции коротко подтверди результат обычным текстом.";
+    "You are running on M5Cardputer with a tiny 240x135 screen. "
+    "Be ultra-fast and concise: reply in 1-2 short sentences without fluff. "
+    "Only give long answers if explicitly asked. "
+    "You remember previous context in this conversation. "
+    "To control hardware (screen brightness, RGB lamp, battery level), "
+    "always execute the appropriate function call immediately. "
+    "After the function executes, confirm briefly in plain text.";
 
   JsonObject tools = jsonRequest.createNestedObject("tools");
   addToolDeclarations(tools);
@@ -250,9 +247,9 @@ String GeminiChat::sendMessage(const String &message) {
   }
 
   JsonObject genConfig = jsonRequest.createNestedObject("generationConfig");
-  genConfig["maxOutputTokens"] = 350;
+  genConfig["maxOutputTokens"] = 250;
   JsonObject thinkConfig = genConfig.createNestedObject("thinkingConfig");
-  thinkConfig["thinkingLevel"] = "minimal";
+  thinkConfig["thinkingBudget"] = 0;
 
   String textResponse = "";
   String lastFunctionResult = "";

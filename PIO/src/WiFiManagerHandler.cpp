@@ -507,15 +507,48 @@ body {
 .screen-content {
   height: 250px;
   overflow-y: auto;
-  white-space: pre-wrap;
-  word-break: break-word;
   font-size: 13px;
   line-height: 1.5;
-  color: var(--neon-green);
-  text-shadow: 0 0 4px #00ff9d40;
   padding-right: 6px;
   scrollbar-width: thin;
   scrollbar-color: #202D3D transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.msg-bubble {
+  max-width: 85%;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.4;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+.msg-bubble.user {
+  align-self: flex-end;
+  text-align: right;
+  background: #182838;
+  color: #FFFFFF;
+  border: 1px solid #2B425B;
+  border-bottom-right-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+.msg-bubble.gemini {
+  align-self: flex-start;
+  text-align: left;
+  background: #0E1B28;
+  color: #38B6FF;
+  border: 1px solid #1C3B5B;
+  border-bottom-left-radius: 2px;
+  box-shadow: 0 0 10px rgba(56, 182, 255, 0.15);
+}
+.msg-bubble.system {
+  align-self: center;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 11px;
+  font-style: italic;
 }
 /* REMOTE KEYBOARD INPUT */
 .remote-input-area {
@@ -674,7 +707,7 @@ body {
   <div class="top-header">
     <div class="brand">⚡ M5CARDPUTER // HARDWARE CONSOLE</div>
     <div style="display:flex;gap:6px;align-items:center;">
-      <span id="ipBadge" class="sys-badge">IP: ...)rawliteral" + getIPAddress() + R"rawliteral(</span>
+      <span id="ipBadge" class="sys-badge">IP: )rawliteral" + getIPAddress() + R"rawliteral(</span>
       <span id="connBadge" class="sys-badge" style="border-color:var(--neon-green);">ONLINE</span>
     </div>
   </div>
@@ -688,22 +721,22 @@ body {
   <div id="pane-terminal" class="tab-pane active">
     <div class="hud-grid">
       <div class="hud-card">
-        <div class="hud-label">💡 RGB СВЕТОДИОД</div>
+        <div class="hud-label">💡 RGB STATUS LED</div>
         <div id="ledBulb" class="bulb-box" style="background:#000;"></div>
         <div id="ledStatus" class="hud-value" style="font-size:11px;">OFF</div>
       </div>
       <div class="hud-card">
-        <div class="hud-label">🖥️ ЭКРАН / ПОДСВЕТКА</div>
+        <div class="hud-label">🖥️ DISPLAY / BACKLIGHT</div>
         <div id="screenVal" class="hud-value">--%</div>
         <div class="progress-rail"><div id="screenFill" class="progress-fill" style="width:0%;"></div></div>
       </div>
       <div class="hud-card">
-        <div class="hud-label">🔋 АККУМУЛЯТОР</div>
+        <div class="hud-label">🔋 BATTERY</div>
         <div id="batVal" class="hud-value">--%</div>
         <div class="progress-rail"><div id="batFill" class="progress-fill" style="width:0%;"></div></div>
       </div>
       <div class="hud-card">
-        <div class="hud-label">📶 WI-FI / СИГНАЛ</div>
+        <div class="hud-label">📶 WI-FI / SIGNAL</div>
         <div id="wifiVal" class="hud-value">-- dBm</div>
         <div id="heapVal" style="font-size:10px;color:var(--text-dim);margin-top:4px;">RAM: -- KB</div>
       </div>
@@ -714,28 +747,28 @@ body {
         <span class="screen-title">📟 CARDPUTER DISPLAY MIRROR (240x135)</span>
         <span id="aiStatusPill" class="status-pill">● IDLE</span>
       </div>
-      <div id="screenContent" class="screen-content">Загрузка диалога Cardputer...</div>
+      <div id="screenContent" class="screen-content">Loading conversation...</div>
     </div>
 
     <div class="remote-input-area">
       <div class="input-header">
-        <span>⌨ БЕСПРОВОДНОЙ ВВОД В CARDPUTER</span>
-        <span style="color:var(--text-dim);font-size:10px;">ENTER: отправить</span>
+        <span>⌨ WIRELESS INPUT TO CARDPUTER</span>
+        <span style="color:var(--text-dim);font-size:10px;">ENTER: send</span>
       </div>
       <form id="inputForm" class="input-row" onsubmit="sendRemoteInput(event)">
-        <input type="text" id="cmdInput" class="input-field" placeholder="Сообщение или команда для Cardputer..." autocomplete="off" autofocus>
-        <button type="submit" id="sendBtn" class="send-btn">ВВОД</button>
+        <input type="text" id="cmdInput" class="input-field" placeholder="Type message or command for Cardputer..." autocomplete="off" autofocus>
+        <button type="submit" id="sendBtn" class="send-btn">SEND</button>
       </form>
       <div class="chip-row">
-        <button type="button" class="chip" onclick="quickSend('Включи красный свет на лампе')">🔴 Красная лампа</button>
-        <button type="button" class="chip" onclick="quickSend('Включи зеленый свет на лампе')">🟢 Зеленая лампа</button>
-        <button type="button" class="chip" onclick="quickSend('Включи синий свет на лампе')">🔵 Синяя лампа</button>
-        <button type="button" class="chip" onclick="quickSend('Включи радугу на лампе')">🌈 Радуга</button>
-        <button type="button" class="chip" onclick="quickSend('Выключи лампу')">❌ Выкл лампу</button>
-        <button type="button" class="chip" onclick="quickSend('Установи яркость экрана на 10%')">☀️ Яркость 10%</button>
-        <button type="button" class="chip" onclick="quickSend('Установи яркость экрана на 80%')">☀️ Яркость 80%</button>
-        <button type="button" class="chip" onclick="quickSend('Какой заряд батареи?')">🔋 Батарея</button>
-        <button type="button" class="chip puke-btn" onclick="triggerShakeEasterEgg()">🤢 ТЕСТ ПАСХАЛКИ (SHAKE)</button>
+        <button type="button" class="chip" onclick="quickSend('Turn the lamp red')">🔴 Red Lamp</button>
+        <button type="button" class="chip" onclick="quickSend('Turn the lamp green')">🟢 Green Lamp</button>
+        <button type="button" class="chip" onclick="quickSend('Turn the lamp blue')">🔵 Blue Lamp</button>
+        <button type="button" class="chip" onclick="quickSend('Set rainbow effect on the lamp')">🌈 Rainbow</button>
+        <button type="button" class="chip" onclick="quickSend('Turn off the lamp')">❌ Lamp Off</button>
+        <button type="button" class="chip" onclick="quickSend('Set screen brightness to 10%')">☀️ Screen 10%</button>
+        <button type="button" class="chip" onclick="quickSend('Set screen brightness to 80%')">☀️ Screen 80%</button>
+        <button type="button" class="chip" onclick="quickSend('What is the battery level?')">🔋 Battery</button>
+        <button type="button" class="chip puke-btn" onclick="triggerShakeEasterEgg()">🤢 SHAKE EASTER EGG</button>
       </div>
     </div>
   </div>
@@ -743,14 +776,14 @@ body {
   <!-- TAB 2: SETTINGS & CONFIG -->
   <div id="pane-settings" class="tab-pane">
     <div class="settings-card">
-      <div class="settings-title">⚙ КОНФИГУРАЦИЯ GEMINI & WI-FI</div>
+      <div class="settings-title">⚙ GEMINI & WI-FI CONFIGURATION</div>
       <form action="/save" method="POST">
         <div class="form-group">
           <label>Gemini API Key</label>
           <input type="text" name="apiKey" class="form-input" placeholder="AIzaSy..." value=")rawliteral" + currentKey + R"rawliteral(">
         </div>
         <div class="form-group">
-          <label>Модель Gemini</label>
+          <label>Gemini Model</label>
           <input type="text" id="modelInput" name="model" class="form-input" placeholder="gemini-3.1-flash-lite" value=")rawliteral" + currentModel + R"rawliteral(">
           <div class="chip-row" style="margin-top:8px;">
             <button type="button" class="chip" onclick="document.getElementById('modelInput').value='gemini-3.1-flash-lite'">3.1 Flash-Lite</button>
@@ -761,16 +794,16 @@ body {
         </div>
         <div class="form-group">
           <label>Wi-Fi SSID</label>
-          <input type="text" name="wifi_ssid" class="form-input" placeholder="Имя сети" value=")rawliteral" + currentSSID + R"rawliteral(">
+          <input type="text" name="wifi_ssid" class="form-input" placeholder="Network Name" value=")rawliteral" + currentSSID + R"rawliteral(">
         </div>
         <div class="form-group">
-          <label>Wi-Fi Пароль</label>
+          <label>Wi-Fi Password</label>
           <input type="password" name="wifi_pass" class="form-input" placeholder="••••••••">
         </div>
-        <button type="submit" class="submit-btn">💾 СОХРАНИТЬ ПАРАМЕТРЫ</button>
+        <button type="submit" class="submit-btn">💾 SAVE SETTINGS</button>
       </form>
-      <form action="/restart" method="POST" onsubmit="return confirm('Перезагрузить устройство Cardputer?');">
-        <button type="submit" class="restart-btn">🔄 ПЕРЕЗАГРУЗИТЬ CARDPUTER</button>
+      <form action="/restart" method="POST" onsubmit="return confirm('Reboot Cardputer device?');">
+        <button type="submit" class="restart-btn">🔄 REBOOT CARDPUTER</button>
       </form>
     </div>
   </div>
@@ -857,8 +890,49 @@ async function fetchTranscript() {
     if (!res.ok) return;
     const data = await res.json();
     const scr = document.getElementById('screenContent');
-    const prevScroll = scr.scrollHeight - scr.scrollTop <= scr.clientHeight + 20;
-    scr.innerText = data.transcript || '> [Начните диалог с клавиатуры или через веб-консоль]';
+    const prevScroll = scr.scrollHeight - scr.scrollTop <= scr.clientHeight + 30;
+    
+    const text = data.transcript || '';
+    if (!text.trim()) {
+      scr.innerHTML = '<div class="msg-bubble system">> [Ready. Start typing below or use Cardputer keyboard]</div>';
+      return;
+    }
+    
+    const lines = text.split('\n');
+    let html = '';
+    let currentRole = '';
+    let currentText = '';
+    
+    const flushBubble = () => {
+      if (!currentText.trim()) return;
+      const clean = currentText.trim().replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      if (currentRole === 'user') {
+        html += '<div class="msg-bubble user">' + clean + '</div>';
+      } else if (currentRole === 'gemini') {
+        html += '<div class="msg-bubble gemini">' + clean + '</div>';
+      } else {
+        html += '<div class="msg-bubble system">' + clean + '</div>';
+      }
+      currentText = '';
+    };
+
+    for (const rawLine of lines) {
+      const line = rawLine.trim();
+      if (line.startsWith('> User:') || line.startsWith('> Web:') || line.startsWith('> You:')) {
+        flushBubble();
+        currentRole = 'user';
+        currentText = line.replace(/^> (User|Web|You):\s*/, '') + '\n';
+      } else if (line.startsWith('Gemini:')) {
+        flushBubble();
+        currentRole = 'gemini';
+        currentText = line.replace(/^Gemini:\s*/, '') + '\n';
+      } else {
+        currentText += rawLine + '\n';
+      }
+    }
+    flushBubble();
+    
+    scr.innerHTML = html;
     if (prevScroll) {
       scr.scrollTop = scr.scrollHeight;
     }
