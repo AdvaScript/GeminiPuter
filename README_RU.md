@@ -72,20 +72,16 @@
 
 ## 📥 Прошивка и установка
 
-### Способ 1: Прошивка через M5Burner или esptool (Рекомендуется)
-Скачайте актуальный файл `GeminiPuter.bin` (или `GeminiPuter-v2.0.1-merged-M5Burner.bin`) со страницы [GitHub Releases](https://github.com/AdvaScript/GeminiPuter/releases).
+### Способ 1: Прошивка через M5Burner или M5Launcher (Рекомендуется)
+Скачайте подходящий файл со страницы [GitHub Releases](https://github.com/AdvaScript/GeminiPuter/releases):
 
-Это **полноценный склеенный образ (Merged Binary)**, готовый для записи с адреса `0x0000`:
-- `0x0000`: Загрузчик ESP32-S3 (Bootloader)
-- `0x8000`: Таблица разделов (Partition Table)
-- `0xe000`: Сектор выбора раздела (Boot App0)
-- `0x10000`: Основная прошивка (Firmware)
+- **Для M5Burner / esptool**: Используйте **`GeminiPuter-v2.0.1-M5Burner.bin`** (или `GeminiPuter.bin`). Это **полноценный склеенный образ (Merged Image)**, записываемый с адреса `0x0000` (включает `bootloader` + `partitions` + `boot_app0` + `firmware`).
+- **Для M5Launcher / MicroSD**: Используйте **`GeminiPuter-v2.0.1-M5Launcher.bin`**. Это файл приложения, готовый к запуску через M5Launcher прямо с карты памяти в раздел `app`.
 
 Прошейте через **esptool.py**:
 ```bash
-esptool.py --chip esp32s3 write_flash 0x0 GeminiPuter.bin
+esptool.py --chip esp32s3 write_flash 0x0 GeminiPuter-v2.0.1-M5Burner.bin
 ```
-Или прошейте/загрузите напрямую в **M5Burner** как файл прошивки!
 
 ### Способ 2: Сборка из исходников через PlatformIO
 1. Склонируйте репозиторий:

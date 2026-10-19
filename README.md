@@ -72,20 +72,16 @@ Connect to `http://<cardputer-ip>/` from any computer, tablet, or smartphone on 
 
 ## 📥 Installation & Flashing
 
-### Option 1: Flashing with M5Burner or esptool (Recommended)
-Download the latest `GeminiPuter.bin` (or `GeminiPuter-v2.0.1-merged-M5Burner.bin`) from [GitHub Releases](https://github.com/AdvaScript/GeminiPuter/releases).
+### Option 1: Flashing with M5Burner or M5Launcher (Recommended)
+Download the appropriate file from [GitHub Releases](https://github.com/AdvaScript/GeminiPuter/releases):
 
-This is a **complete merged image** packaged starting at offset `0x0000` containing:
-- `0x0000`: ESP32-S3 Bootloader
-- `0x8000`: Partition Table
-- `0xe000`: Boot App0 (OTA selector)
-- `0x10000`: Application Firmware
+- **For M5Burner / esptool**: Use **`GeminiPuter-v2.0.1-M5Burner.bin`** (or `GeminiPuter.bin`). This is a **complete merged image** flashed starting at offset `0x0000` (`bootloader` + `partitions` + `boot_app0` + `firmware`).
+- **For M5Launcher / SD Card**: Use **`GeminiPuter-v2.0.1-M5Launcher.bin`**. This is the standard app binary intended to be loaded by M5Launcher straight into the `app` partition.
 
 Flash using **esptool.py**:
 ```bash
-esptool.py --chip esp32s3 write_flash 0x0 GeminiPuter.bin
+esptool.py --chip esp32s3 write_flash 0x0 GeminiPuter-v2.0.1-M5Burner.bin
 ```
-Or burn directly via **M5Burner** by uploading `GeminiPuter.bin` as the firmware binary!
 
 ### Option 2: Build from Source with PlatformIO
 1. Clone this repository:
