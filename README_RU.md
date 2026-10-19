@@ -1,10 +1,11 @@
-# ⚡ GeminiPuter v2.0 (Cardputer & Cardputer ADV)
+# ⚡ GeminiPuter v2.0.1 (Cardputer & Cardputer ADV)
 
 [![GitHub Release](https://img.shields.io/github/v/release/AdvaScript/GeminiPuter?color=38B6FF&style=flat-square)](https://github.com/AdvaScript/GeminiPuter/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](LICENSE)
 [![PlatformIO](https://img.shields.io/badge/PlatformIO-ESP32--S3-orange.svg?style=flat-square)](https://platformio.org/)
 [![Gemini](https://img.shields.io/badge/Google-Gemini%203.1%20Flash--Lite-blue.svg?style=flat-square)](https://ai.google.dev/)
 [![Hardware](https://img.shields.io/badge/M5Stack-Cardputer%20%26%20ADV-purple.svg?style=flat-square)](https://m5stack.com)
+[![M5Burner Ready](https://img.shields.io/badge/M5Burner-Merged%20Binary-success.svg?style=flat-square)](https://m5stack.com)
 
 Продвинутая интерактивная прошивка, превращающая **M5Stack Cardputer** и **Cardputer ADV** в карманного ИИ-ассистента на базе **Google Gemini 3.1 Flash-Lite** с поддержкой вызова аппаратных функций устройства, двуязычной русско-английской клавиатурой, веб-консолью управления в реальном времени и динамическими эффектами RGB подсветки.
 
@@ -15,9 +16,11 @@
 
 ## 🚀 Сравнение: Оригинал vs Наш Форк
 
-| Возможность | Оригинал (`nishad2m8/GeminiPuter`) | Наш Форк (`AdvaScript/GeminiPuter` v2.0) |
+| Возможность | Оригинал (`nishad2m8/GeminiPuter`) | Наш Форк (`AdvaScript/GeminiPuter` v2.0.1) |
 | :--- | :--- | :--- |
 | **Поддерживаемое железо** | Только базовый M5Cardputer | **M5Stack Cardputer** + **Cardputer ADV** |
+| **Совместимость с M5Burner** | Обычный app-бинарник (не стартует с 0x0) | **Полный склеенный образ (Merged Image)** со всеми таблицами и загрузчиком |
+| **Режим Flash-памяти** | Только QIO (сбоит на части чипов) | **Универсальный DIO (Dual I/O)** для 100% совместимости |
 | **Модель Gemini** | Зашитая `gemini-1.5-flash` (Устарела / ошибка 404) | **`gemini-3.1-flash-lite`**, `gemini-2.5-flash`, смена прямо из веб-морды |
 | **Скорость генерации** | Стандартная задержка "размышлений" (Thinking) | **Режим мгновенного ответа** (`thinkingBudget: 0`) без лишних пауз |
 | **Управление железом** | ❌ Отсутствует (только текстовый чат) | ✅ **Function Calling**: Яркость экрана, WS2812 RGB лампа, уровень заряда батареи |
@@ -45,7 +48,7 @@
 - Четкий кириллический шрифт (`rubik_14_cy`).
 
 ### 🌐 Веб-интерфейс и удаленный ввод
-Откройте браузер по адресу `http://<ip-картпьютера>/` с телефона или ПК:
+Откройте браузер по адресу `http://<ip-адрес-картпьютера>/` с телефона или ПК:
 - **Живая лента диалога**: Синхронное отображение сообщений в виде стильных бабблов (запросы пользователя справа, ответы Gemini слева синим цветом).
 - **Удаленная клавиатура**: Печатайте с удобной клавиатуры компьютера с историей команд (стрелки `Вверх`/`Вниз`).
 - **Быстрые кнопки (Quick Chips)**: Управление светом, яркостью, батареей и тестом в один клик.
@@ -69,14 +72,20 @@
 
 ## 📥 Прошивка и установка
 
-### Способ 1: Готовый бинарник (Рекомендуется)
-Скачайте актуальный файл `GeminiPuter.bin` со страницы [GitHub Releases](https://github.com/AdvaScript/GeminiPuter/releases).
+### Способ 1: Прошивка через M5Burner или esptool (Рекомендуется)
+Скачайте актуальный файл `GeminiPuter.bin` (или `GeminiPuter-v2.0.1-merged-M5Burner.bin`) со страницы [GitHub Releases](https://github.com/AdvaScript/GeminiPuter/releases).
+
+Это **полноценный склеенный образ (Merged Binary)**, готовый для записи с адреса `0x0000`:
+- `0x0000`: Загрузчик ESP32-S3 (Bootloader)
+- `0x8000`: Таблица разделов (Partition Table)
+- `0xe000`: Сектор выбора раздела (Boot App0)
+- `0x10000`: Основная прошивка (Firmware)
 
 Прошейте через **esptool.py**:
 ```bash
 esptool.py --chip esp32s3 write_flash 0x0 GeminiPuter.bin
 ```
-Или воспользуйтесь **M5Burner** либо веб-прошивальщиком [ESP Web Flasher](https://espressif.github.io/esptool-js/).
+Или прошейте/загрузите напрямую в **M5Burner** как файл прошивки!
 
 ### Способ 2: Сборка из исходников через PlatformIO
 1. Склонируйте репозиторий:

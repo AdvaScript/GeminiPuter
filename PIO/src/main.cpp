@@ -390,6 +390,7 @@ void setup() {
   cfg.external_imu = true;
   M5Cardputer.begin(cfg, true);
   M5Cardputer.Keyboard.begin();
+  M5.Display.setBrightness(currentScreenBrightness);
 
   lvglMutex = xSemaphoreCreateMutex();
   ledMutex = xSemaphoreCreateMutex();

@@ -1,10 +1,11 @@
-# ⚡ GeminiPuter v2.0 (Cardputer & Cardputer ADV)
+# ⚡ GeminiPuter v2.0.1 (Cardputer & Cardputer ADV)
 
 [![GitHub Release](https://img.shields.io/github/v/release/AdvaScript/GeminiPuter?color=38B6FF&style=flat-square)](https://github.com/AdvaScript/GeminiPuter/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](LICENSE)
 [![PlatformIO](https://img.shields.io/badge/PlatformIO-ESP32--S3-orange.svg?style=flat-square)](https://platformio.org/)
 [![Gemini](https://img.shields.io/badge/Google-Gemini%203.1%20Flash--Lite-blue.svg?style=flat-square)](https://ai.google.dev/)
 [![Hardware](https://img.shields.io/badge/M5Stack-Cardputer%20%26%20ADV-purple.svg?style=flat-square)](https://m5stack.com)
+[![M5Burner Ready](https://img.shields.io/badge/M5Burner-Merged%20Binary-success.svg?style=flat-square)](https://m5stack.com)
 
 An advanced, interactive firmware transforming the **M5Stack Cardputer** and **Cardputer ADV** into a full-featured pocket AI assistant powered by Google's **Gemini 3.1 Flash-Lite** with native hardware function calling, bilingual Russian/English keyboard layout, live web remote console, and dynamic RGB lighting effects.
 
@@ -15,9 +16,11 @@ An advanced, interactive firmware transforming the **M5Stack Cardputer** and **C
 
 ## 🚀 Key Improvements & Comparison
 
-| Feature | Original (`nishad2m8/GeminiPuter`) | Our Fork (`AdvaScript/GeminiPuter` v2.0) |
+| Feature | Original (`nishad2m8/GeminiPuter`) | Our Fork (`AdvaScript/GeminiPuter` v2.0.1) |
 | :--- | :--- | :--- |
 | **Hardware Compatibility** | Standard M5Cardputer only | **M5Stack Cardputer** + **Cardputer ADV** |
+| **M5Burner Flashing** | Single raw app partition (fails on 0x0) | **Full Merged Image** (`bootloader` + `partitions` + `boot_app0` + `app` @ 0x0) |
+| **Flash Mode** | QIO only (fails on some chips) | **Universal DIO (Dual I/O)** compatible with all flash modules |
 | **Gemini AI Model** | Hardcoded `gemini-1.5-flash` (Deprecated / 404 error) | **`gemini-3.1-flash-lite`**, `gemini-2.5-flash`, customizable via Web UI |
 | **Inference Speed** | Default thinking latency | **Zero-latency thinking mode** (`thinkingBudget: 0`) for near-instant responses |
 | **Hardware Function Calling** | ❌ None (pure text assistant) | ✅ **Full Tool Calling**: Screen brightness, WS2812 RGB LED effects, real battery state |
@@ -69,14 +72,20 @@ Connect to `http://<cardputer-ip>/` from any computer, tablet, or smartphone on 
 
 ## 📥 Installation & Flashing
 
-### Option 1: Flashing the Pre-compiled Binary (Recommended)
-Download the latest `GeminiPuter.bin` from [GitHub Releases](https://github.com/AdvaScript/GeminiPuter/releases).
+### Option 1: Flashing with M5Burner or esptool (Recommended)
+Download the latest `GeminiPuter.bin` (or `GeminiPuter-v2.0.1-merged-M5Burner.bin`) from [GitHub Releases](https://github.com/AdvaScript/GeminiPuter/releases).
+
+This is a **complete merged image** packaged starting at offset `0x0000` containing:
+- `0x0000`: ESP32-S3 Bootloader
+- `0x8000`: Partition Table
+- `0xe000`: Boot App0 (OTA selector)
+- `0x10000`: Application Firmware
 
 Flash using **esptool.py**:
 ```bash
 esptool.py --chip esp32s3 write_flash 0x0 GeminiPuter.bin
 ```
-Or use **M5Burner** / [ESP Web Flasher](https://espressif.github.io/esptool-js/).
+Or burn directly via **M5Burner** by uploading `GeminiPuter.bin` as the firmware binary!
 
 ### Option 2: Build from Source with PlatformIO
 1. Clone this repository:
